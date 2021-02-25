@@ -4,10 +4,9 @@ import './registerServiceWorker';
 import vuetify from './plugins/vuetify';
 import axios from 'axios';
 import vReadMoreBox from 'v-read-more-box';
-//import VueSessionStorage from "vue-sessionstorage";
+import VueSimpleAlert from "vue-simple-alert";
 
-
-//Vue.use(VueSessionStorage);
+Vue.use(VueSimpleAlert);
 
 Vue.config.productionTip = false
 

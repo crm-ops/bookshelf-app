@@ -400,12 +400,14 @@ import axios from 'axios'
       }
     },
     mounted() {
-    console.log('App mounted !');
+    
     if(localStorage.getItem('booklist')) {
       this.booklist=JSON.parse(localStorage.getItem('booklist'));
+     
     }
     if(localStorage.getItem('selection')) {
-      this.selection=JSON.parse(localStorage.getItem('selection'));
+      this.selection=JSON.parse(localStorage.getItem('selection'))
+                          
     }
     if (localStorage.getItem('title')) {
       this.title = localStorage.getItem('title');
@@ -416,22 +418,27 @@ import axios from 'axios'
     if (localStorage.getItem('state')) {
       this.state = localStorage.getItem('state');
     } 
-
+    console.log('App mounted !');
+    
   },
    watch: {
-        booklist: {
-          handler() { console.log('Todos changed!'); 
-          localStorage.setItem('booklist', JSON.stringify(this.booklist))
-          },
-          deep: true,
-        },
 
-        selection: {
+     selection: {
           handler() { console.log('Selection has changed'); 
           localStorage.setItem('selection', JSON.stringify(this.selection))
           },
            deep: true,
         },
+     booklist: {
+          handler() { console.log('Booklist changed!'); 
+          localStorage.setItem('booklist', JSON.stringify(this.booklist))
+                                
+          
+          },
+          deep: true,
+        },
+
+        
 
         title: {
           handler() { console.log('Title has changed'); 
@@ -458,11 +465,10 @@ import axios from 'axios'
     },
     methods: {
     searchBooks: function () {
-    
+    let doubloon;
     let targetUrl= `https://www.googleapis.com/books/v1/volumes?q=`+this.title+`+inauthor:`+this.author+`&key=AIzaSyCRe2tcgjhsZgUjzMJ_aJNI-7qY3yH381w`
     console.log(targetUrl)  
-   
-     axios  
+    let searchResult = axios  
       .get(targetUrl)  
       .then(response =>(this.booklist = response.data.items ) )
       .catch(error => {
@@ -470,32 +476,68 @@ import axios from 'axios'
         this.errored = true
       })
       .finally(() => this.loading = false)
+   
+    
+      
 
   
   },
   addToCart: function(book){
-   
-   if(!this.selection.includes(book)){
-    this.selection.push(book)
-    console.log(this.selection)
-     
-    }
+
+    console.log("add to cart")
+    let item
+    let test=false
+    
+          for (item of this.selection) {
+            console.log("itemid="+item.id+" book.id="+book.id) 
+            console.log(item.id==book.id)
+            
+             if(item.id==book.id) {
+                test=true
+                this.$alert("This book is already in your list !!");
+              }
+            }
+
+        
+            if(test==false)              
+                {
+                this.selection.push(book)
+                }
+
   },
 
-  removeFromCart: function(book){
+
+  toDisplay: function(bookid){
    
-   if(this.selection.includes(book)){
-    this.selection.pop(book)
-    console.log(this.selection)
+   if(this.booklist.includes(book)){
+    this.booklist.pop(book)
+    console.log(this.booklist)
      
     }
     
   },
+
+  removeFromCart: function(book){
+   const filtersList = this.selection.filter(element => element !== book)
+      this.selection=filtersList 
+    
+    
+  },
   
   selectionInclude: function(book){
-   if(this.selection.includes(book)){
+
+
+
+     if(this.selection.includes(book) && this.booklist.includes(book)  ){
+
+       console.log("selectionInclude returned id = "+book.id)
+
     return true
     }
+      else if (this.booklist.includes(book)){
+        return false
+
+      }
   },
 
   toggleState: function(){
@@ -518,8 +560,20 @@ resetLocalStorage : function(){
          console.log("reset localStorageCache")
 
   },
+
+findObjectByKey : function(array, key, value) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i][key] === value) {
+                return array[i];
+                }
+        }
+    return null;
+    }
    
+
   }
+
+
 }
   
 </script>
