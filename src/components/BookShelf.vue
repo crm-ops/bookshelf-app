@@ -24,7 +24,7 @@
               Add book to Library
 
             </v-btn>
-            
+
         
       </v-row>
 
@@ -32,7 +32,7 @@
           
            <v-btn
               outlined
-              color="red"
+              color="yellow"
               v-on:click ="resetLocalStorage"  
             >
               Clear Local Storage Cache
