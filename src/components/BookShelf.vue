@@ -32,7 +32,7 @@
           
            <v-btn
               outlined
-              color="black"
+              color="cyan"
               v-on:click ="resetLocalStorage"  
             >
               Clear Local Storage Cache
