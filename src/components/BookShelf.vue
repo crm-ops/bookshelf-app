@@ -32,7 +32,7 @@
           
            <v-btn
               outlined
-              color="red"
+              color="black"
               v-on:click ="resetLocalStorage"  
             >
               Clear Local Storage Cache
@@ -487,13 +487,13 @@ import axios from 'axios'
 
     console.log("add to cart")
     let item
-    let test=false
-    
+    let test=false // to delete 
+          //implement this with a filter - asses if return arry is empty 
           for (item of this.selection) {
             console.log("itemid="+item.id+" book.id="+book.id) 
             console.log(item.id==book.id)
             
-             if(item.id==book.id) {
+             if(item.id===book.id) {
                 test=true
                 this.$alert("This book is already in your list !!");
               }
